@@ -50,7 +50,7 @@
       flex-direction: column;
       background-color: #f8f9fa;
       position: absolute;
-      top: 4rem;
+      top: 0;
       left: 0;
       right: 0;
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);

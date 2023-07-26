@@ -17,7 +17,13 @@ use App\Http\Controllers\Auth\LoginController;
 Route::get('/', function () {
     return view('auth.register');
 });
+Route::get('/h', function () {
+    return view('home');
+});
 
+Route::get('/complete-registration', function () {
+    return view('home');
+})->name('complete-registration');
 
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.form');
@@ -33,5 +39,5 @@ Route::get('/dashboard', function () {
     return view('google2fa.index');
 })->name('dashboard');
 
-
+Route::post('/fa', [LoginController::class, 'checkTotp'])->name('fa');
 Route::get('/home', [RegisterController::class, 'register'])->name('home');

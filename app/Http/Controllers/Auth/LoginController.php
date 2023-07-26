@@ -4,6 +4,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use RobThree\Auth\TwoFactorAuth;
+
 
 class LoginController extends Controller
 {
@@ -18,29 +20,19 @@ class LoginController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
         $user = User::where('email', $email)
-        ->where('password', $password)
         ->first();
 
-        if ($user) {
+        if ($user && password_verify($password, $user->password)) {
             // User exists
-           
+            $request->session()->put('is_logged_in', true);
+            $request->session()->put('user_id', $user['id']);
             return redirect()->route('dashboard');
         } else {
             // User doesn't exist
             return "User with username $email does not exist!";
         }
-        // For demonstration purposes, let's assume the user is authenticated if the username and password match
-        if ($email === 'imenturki99@gmail.com' && $password === '111') {
-            // Set a session variable to indicate the user is logged in
-            $request->session()->put('is_logged_in', true);
-
-            // Redirect the user to the dashboard or any other authenticated page
-            return redirect()->route('dashboard');
-        }
-
-        // If authentication fails, redirect back to the login form with an error message
-        //return redirect()->route('login')->with('error', 'Invalid credentials. Please try again.');
-    echo 'wrong';
+      
+       
     }
 
     public function logout(Request $request)
@@ -50,5 +42,28 @@ class LoginController extends Controller
 
         // Redirect the user to the login form
         return redirect()->route('login');
+    }
+    public function checkTotp(Request $request)
+    {
+        $userid = request()->session()->get('user_id');
+        $user = User::where('id', $userid)
+        ->first();
+        //echo $user;
+        if($user['token']){
+             $userInput = $request->input('one_time_password');
+             $tfa = new TwoFactorAuth('project2');
+            $totpCode = $tfa->getCode($user['token']);
+            
+            $isTotpValid = $tfa->verifyCode($user['token'], $userInput);
+            if ($isTotpValid) {
+              return view('home');
+                //return redirect()->route('authenticated.dashboard');
+            } else {
+               
+                return view('google2fa.index')->withErrors(['totp' => 'Invalid TOTP']);
+            }
+        }
+       
+        //
     }
 }
