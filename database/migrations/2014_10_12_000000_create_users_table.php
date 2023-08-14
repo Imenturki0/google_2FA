@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('token');
             $table->string('totp_verified');
+            $table->string('session_id')->nullable();
             $table->timestamps();
         });
     }

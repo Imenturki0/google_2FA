@@ -5,6 +5,7 @@
  */
 
 import axios from 'axios';
+import 'select2';
 
 window.axios = axios;
 

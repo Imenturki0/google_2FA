@@ -198,4 +198,11 @@ return [
 
     'same_site' => 'lax',
 
+    /*'options' => [
+        //'cookie_secure' => true,
+        //'cookie_httponly' => true,
+        'use_only_cookies' => true,
+        'gc_maxlifetime' => 3600,
+    ],*/
+
 ];

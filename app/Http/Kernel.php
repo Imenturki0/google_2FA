@@ -21,6 +21,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \Illuminate\Http\Middleware\HandleCors::class,
     ];
 
     /**
@@ -39,7 +40,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             //\App\Http\Middleware\RegenerateSession::class,
            // \App\Http\Middleware\VerifySessionSecurity::class,
-       
+
        
         ],
 
@@ -52,9 +53,11 @@ class Kernel extends HttpKernel
     ];
 
     protected $routeMiddleware = [
-        'auth' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
+        'authnot' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
         //'auth' => \App\Http\Middleware\Authenticate::class,
         'totp.verification' => \App\Http\Middleware\TOTPVerificationMiddleware::class,
+        'single.session' => \App\Http\Middleware\EnsureSingleSession::class,
+        'cors'=> \App\Http\Middleware\CorsMiddleware::class,
     ];
 
     /**
